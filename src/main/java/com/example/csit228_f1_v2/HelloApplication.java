@@ -130,7 +130,7 @@ public class HelloApplication extends Application {
                         String name = res.getString("name");
                         String email = res.getString("email");
                         String pass = res.getString("password");
-                        if (tfUsername.getText() != name || tfEmail.getText() != email || pfPassword.getText() != pass) {
+                        if (!tfUsername.getText().equals(name) || !tfEmail.getText().equals(email) || !pfPassword.getText().equals(pass)) {
                             System.out.println("Login unsuccessful");
                         } else {
                             System.out.println("Hello");
