@@ -21,6 +21,10 @@ import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 public class HelloApplication extends Application {
     @Override
@@ -51,9 +55,18 @@ public class HelloApplication extends Application {
         tfUsername.setFont(Font.font(30));
 //        tfUsername.setMaxWidth(150);
 
+        Label lbEmail = new Label("Email");
+        lbEmail.setFont(Font.font(30));
+        lbEmail.setTextFill(Color.CHARTREUSE);
+        grid.add(lbEmail, 0, 3);
+
+        TextField tfEmail = new TextField();
+        grid.add(tfEmail, 1, 3);
+        tfEmail.setFont(Font.font(30));
+
         Label lbPassword = new Label("Password");
         lbPassword.setFont(Font.font(30));
-        lbPassword.setTextFill(Color.CHARTREUSE);
+        lbPassword.setTextFill(Color.MAROON);
         grid.add(lbPassword, 0, 2);
 
         PasswordField pfPassword = new PasswordField();
@@ -100,14 +113,49 @@ public class HelloApplication extends Application {
 
         Button btnLogin = new Button("Log In");
         btnLogin.setFont(Font.font(40));
-        grid.add(btnLogin, 0, 3, 2, 1);
+        grid.add(btnLogin, 0, 5, 1, 1);
+
+        Button btnReg = new Button("Create an Account");
+        btnReg.setFont(Font.font(40));
+        grid.add(btnReg, 1, 5, 1, 1);
 
         btnLogin.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
+                try (Connection c = MySQLConnection.getConnection(); Statement statement = c.createStatement();) {
+                    String query = "SELECT * FROM new_users";
+                    ResultSet res = statement.executeQuery(query);
+                    while (res.next()) {
+                        int id = res.getInt("id");
+                        String name = res.getString("name");
+                        String email = res.getString("email");
+                        String pass = res.getString("password");
+                        if (tfUsername.getText() != name || tfEmail.getText() != email || pfPassword.getText() != pass) {
+                            System.out.println("Login unsuccessful");
+                        } else {
+                            System.out.println("Hello");
+                            try {
+                                Parent p = FXMLLoader.load(getClass().getResource("homepage.fxml"));
+                                Scene s = new Scene(p);
+                                stage.setScene(s);
+                                stage.show();
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        });
+
+        btnReg.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
                 System.out.println("Hello");
                 try {
-                    Parent p = FXMLLoader.load(getClass().getResource("homepage.fxml"));
+                    Parent p = FXMLLoader.load(getClass().getResource("registrar.fxml"));
                     Scene s = new Scene(p);
                     stage.setScene(s);
                     stage.show();
