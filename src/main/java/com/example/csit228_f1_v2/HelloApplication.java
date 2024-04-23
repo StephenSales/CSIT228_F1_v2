@@ -126,7 +126,7 @@ public class HelloApplication extends Application {
                     String query = "SELECT * FROM new_users";
                     ResultSet res = statement.executeQuery(query);
                     while (res.next()) {
-                        int id = res.getInt("id");
+                        int id = res.getInt("userid");
                         String name = res.getString("name");
                         String email = res.getString("email");
                         String pass = res.getString("password");
@@ -135,7 +135,7 @@ public class HelloApplication extends Application {
                         } else {
                             System.out.println("Hello");
                             try {
-                                Parent p = FXMLLoader.load(getClass().getResource("homepage.fxml"));
+                                Parent p = FXMLLoader.load(getClass().getResource("realhome.fxml"));
                                 Scene s = new Scene(p);
                                 stage.setScene(s);
                                 stage.show();

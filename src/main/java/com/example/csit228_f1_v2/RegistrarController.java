@@ -8,11 +8,10 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
+import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.sql.*;
 
 public class RegistrarController {
     public Button btnSubmit;
@@ -38,8 +37,20 @@ public class RegistrarController {
         }
 
         try {
+            int uid;
+            try (Connection c = MySQLConnection.getConnection();
+                 PreparedStatement statement = c.prepareStatement(
+                         "SELECT * FROM new_users WHERE name = ?"
+                 )) {
+                String name = tfName.getText();
+                statement.setString(1, name);
+                ResultSet res = statement.executeQuery();
+                uid = res.getInt("userid");
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
             Parent homepage = FXMLLoader.load(HelloApplication.class
-                    .getResource("homepage.fxml"));
+                    .getResource("realhome.fxml"));
             AnchorPane p = (AnchorPane) pnReg.getParent();
             p.getChildren().remove(pnReg);
             p.getChildren().add(homepage);
