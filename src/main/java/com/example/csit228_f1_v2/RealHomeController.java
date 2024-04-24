@@ -37,12 +37,13 @@ public class RealHomeController {
             while (res.next()) {
                 String text = res.getString("text");
                 String date = res.getString("date");
+                int tid = res.getInt("listid");
                 FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("task-card.fxml"));
                 GridPane taskCard = fxmlLoader.load();
 
                 TaskCardController taskCardController = fxmlLoader.getController();
 
-                taskCardController.setTaskCardValues(String.valueOf(i), text, date);
+                taskCardController.setTaskCardValues(String.valueOf(i), text, date, tid);
                 vbDisplay.getChildren().add(taskCard);
                 System.out.println("here");
                 i++;

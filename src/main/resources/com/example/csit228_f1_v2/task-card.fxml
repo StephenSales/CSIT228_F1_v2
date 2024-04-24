@@ -17,7 +17,7 @@
       <Label fx:id="taskID" text="ID" />
       <Label fx:id="taskText" text="Task" GridPane.rowIndex="1" />
       <Label fx:id="taskDate" text="Date" GridPane.rowIndex="2" />
-      <Button fx:id="btnTaskEdit" mnemonicParsing="false" text="Edit" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-      <Button fx:id="btnTaskDelete" mnemonicParsing="false" text="Delete" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+      <Button fx:id="btnTaskEdit" mnemonicParsing="false" onAction="#onTaskEditClicked" text="Edit" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+      <Button fx:id="btnTaskDelete" mnemonicParsing="false" onAction="#onTaskDeleteClicked" text="Delete" GridPane.columnIndex="1" GridPane.rowIndex="2" />
    </children>
 </GridPane>
