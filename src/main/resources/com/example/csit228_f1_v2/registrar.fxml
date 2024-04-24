@@ -44,15 +44,15 @@
                </font></Label>
             <TextField fx:id="tfName" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="1">
                <font>
-                  <Font size="30.0" />
+                  <Font size="20.0" />
                </font></TextField>
              <TextField fx:id="tfEmail" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="3">
                  <font>
-                     <Font size="30.0" />
+                     <Font size="20.0" />
                  </font></TextField>
             <PasswordField fx:id="pfPass" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="2">
                <font>
-                  <Font size="30.0" />
+                  <Font size="20.0" />
                </font>
             </PasswordField>
          </children>

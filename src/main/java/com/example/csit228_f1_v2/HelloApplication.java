@@ -6,6 +6,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -79,18 +80,18 @@ public class HelloApplication extends Application {
         tmpPassword.setVisible(false);
 
         ToggleButton btnShow = new ToggleButton("( )");
-//        btnShow.setOnAction(new EventHandler<ActionEvent>() {
-//            @Override
-//            public void handle(ActionEvent actionEvent) {
-//                if (btnShow.isSelected()) {
-//                    tmpPassword.setText(pfPassword.getText());
-//                    tmpPassword.setVisible(true);
-//                } else {
-//                    tmpPassword.setVisible(false);
-//                    pfPassword.setText(tmpPassword.getText());
-//                }
-//            }
-//        });
+        btnShow.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                if (btnShow.isSelected()) {
+                    tmpPassword.setText(pfPassword.getText());
+                    tmpPassword.setVisible(true);
+                } else {
+                    tmpPassword.setVisible(false);
+                    pfPassword.setText(tmpPassword.getText());
+                }
+            }
+        });
         btnShow.setOnMousePressed(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
@@ -122,7 +123,7 @@ public class HelloApplication extends Application {
         btnLogin.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-                try (Connection c = MySQLConnection.getConnection(); Statement statement = c.createStatement();) {
+                try (Connection c = MySQLConnection.getConnection(); Statement statement = c.createStatement()) {
                     String query = "SELECT * FROM new_users";
                     ResultSet res = statement.executeQuery(query);
                     while (res.next()) {
@@ -134,10 +135,14 @@ public class HelloApplication extends Application {
                             System.out.println("Login unsuccessful");
                         } else {
                             System.out.println("Hello");
+                            currUser.uid = id;
                             try {
+//                                FXMLLoader fxmlLoader = new FXMLLoader();
                                 Parent p = FXMLLoader.load(getClass().getResource("realhome.fxml"));
+//                                RealHomeController controller = fxmlLoader.getController();
                                 Scene s = new Scene(p);
                                 stage.setScene(s);
+//                                controller.onStart();
                                 stage.show();
                             } catch (IOException e) {
                                 e.printStackTrace();
@@ -157,6 +162,8 @@ public class HelloApplication extends Application {
                 try {
                     Parent p = FXMLLoader.load(getClass().getResource("registrar.fxml"));
                     Scene s = new Scene(p);
+                    RegistrarController.prev = ((Node) actionEvent.getSource()).getScene();
+                    RealHomeController.prev = ((Node) actionEvent.getSource()).getScene();
                     stage.setScene(s);
                     stage.show();
                 } catch (IOException e) {
