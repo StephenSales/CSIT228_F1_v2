@@ -6,10 +6,9 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
@@ -34,15 +33,21 @@ public class RealHomeController {
             statement.setInt(1, currUser.uid);
             ResultSet res = statement.executeQuery();
             int i = 1;
+            vbDisplay.getChildren().clear();
             while (res.next()) {
                 String text = res.getString("text");
                 String date = res.getString("date");
-                vbDisplay.getChildren().add();
+                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("task-card.fxml"));
+                GridPane taskCard = fxmlLoader.load();
 
-                System.out.println(i + ": " + text + ", " + date);
+                TaskCardController taskCardController = fxmlLoader.getController();
+
+                taskCardController.setTaskCardValues(String.valueOf(i), text, date);
+                vbDisplay.getChildren().add(taskCard);
+                System.out.println("here");
                 i++;
             }
-        } catch (SQLException e) {
+        } catch (SQLException | IOException e) {
             throw new RuntimeException(e);
         }
     }
@@ -59,6 +64,7 @@ public class RealHomeController {
             statement.setString(3, date);
             int rowsInserted = statement.executeUpdate();
             System.out.println("Rows inserted: " + rowsInserted);
+            onStart();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -85,6 +91,9 @@ public class RealHomeController {
     }
 
     public void onDeleteClicked(ActionEvent event) {
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        stage.setScene(prev);
+        stage.show();
         try (Connection c = MySQLConnection.getConnection();
              PreparedStatement statement = c.prepareStatement(
                      "DELETE FROM new_users WHERE userid = ?"
@@ -92,9 +101,17 @@ public class RealHomeController {
             statement.setInt(1, currUser.uid);
             int rowsDeleted = statement.executeUpdate();
             System.out.println("Rows deleted: " + rowsDeleted);
-            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            stage.setScene(prev);
-            stage.show();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        try (Connection c = MySQLConnection.getConnection();
+             PreparedStatement statement = c.prepareStatement(
+                     "DELETE FROM todolist WHERE uid = ?"
+             )) {
+            statement.setInt(1, currUser.uid);
+            int rowsDeleted = statement.executeUpdate();
+            System.out.println("Rows deleted: " + rowsDeleted);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

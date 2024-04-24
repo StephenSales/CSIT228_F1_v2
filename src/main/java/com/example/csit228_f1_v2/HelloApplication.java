@@ -137,12 +137,12 @@ public class HelloApplication extends Application {
                             System.out.println("Hello");
                             currUser.uid = id;
                             try {
-//                                FXMLLoader fxmlLoader = new FXMLLoader();
-                                Parent p = FXMLLoader.load(getClass().getResource("realhome.fxml"));
-//                                RealHomeController controller = fxmlLoader.getController();
+                                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("realhome.fxml"));
+                                Parent p = fxmlLoader.load();
+                                RealHomeController controller = fxmlLoader.getController();
                                 Scene s = new Scene(p);
                                 stage.setScene(s);
-//                                controller.onStart();
+                                controller.onStart();
                                 stage.show();
                             } catch (IOException e) {
                                 e.printStackTrace();

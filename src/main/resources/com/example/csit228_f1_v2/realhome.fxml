@@ -28,7 +28,7 @@
             <TextField fx:id="tfDate" prefHeight="59.0" prefWidth="168.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
          </children>
       </GridPane>
-      <ScrollPane layoutX="291.0" layoutY="114.0" prefHeight="268.0" prefWidth="294.0">
+      <ScrollPane fx:id="spCont" layoutX="291.0" layoutY="114.0" prefHeight="268.0" prefWidth="294.0">
          <content>
             <VBox fx:id="vbDisplay" prefHeight="268.0" prefWidth="294.0" />
          </content>
